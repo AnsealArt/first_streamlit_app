@@ -55,6 +55,6 @@ streamlit.text("What fruit would you like to add?")
 add_my_fruit = ""
 add_my_fruit = streamlit.multiselect("Pick some fruits:", list(my_fruit_list.index))
 if not add_my_fruit == "" and len(add_my_fruit) > 0:
-  my_cur.execute("INSERT INTO fruit_load_list VALUE ", add_my_fruit)
+  my_cur.execute("INSERT INTO fruit_load_list VALUES ('from streamlit')")
   streamlit.text("Thanks for adding " + "".join(add_my_fruit)) 
 
