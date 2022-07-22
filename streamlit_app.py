@@ -12,7 +12,11 @@ def get_fruityvice_data(this_fruit_choice):
   fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + this_fruit_choice)
   fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
   return fruityvice_normalized
-  
+ 
+def get_fruit_load_list():
+  with my_cnx.cursor() as my_cur:
+    my_cur.execute("SELECT * FROM fruit_load_list")
+    return my_cur.fetchall()
 
 streamlit.title('My Parents New Healthy Dinner')
 
@@ -51,13 +55,13 @@ except URLError as e:
 streamlit.write('The user entered ', fruit_choice)
 
 
-# Get data from Snowflake
-my_cur = my_cnx.cursor()
-my_cur.execute("SELECT * FROM fruit_load_list")
-my_data_rows = my_cur.fetchall()
-
 streamlit.header("The fruit load list contains:")
-streamlit.dataframe(my_data_rows)
+
+# Get data from Snowflake
+# Button to load the fruit
+if streamlit.button('Get Fruit Load List'):
+  my_data_rows = get_fruit_load_list()
+  streamlit.dataframe(my_data_rows)
 
 streamlit.stop()
 
